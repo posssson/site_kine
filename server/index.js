@@ -13,6 +13,10 @@ mongoose.connect('mongodb://localhost:27017/kine', {
 
 app.use(authRoutes);
 
+app.get('/', (req, res) => {
+    res.send('Bienvenue sur la page d\'accueil!');
+  });
+  
 const PORT = 5000;
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);
