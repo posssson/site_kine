@@ -5,6 +5,7 @@ const cors = require('cors');
 const path = require('path');
 const authRoutes = require('./routes/auth');
 const Patient = require('./models/Patient');
+const appointmentRoutes = require('./routes/appointments');
 
 const app = express();
 app.use(express.json());
@@ -20,6 +21,7 @@ mongoose.connect('mongodb://localhost:27017/kine', {
 });
 
 app.use(authRoutes);
+app.use('/api/appointments', appointmentRoutes);
 
 app.get('/', (req, res) => {
   res.send('Bienvenue sur la page d\'accueil!');
@@ -36,12 +38,15 @@ app.get('/api/patients', async (req, res) => {
   }
 });
 
-// Route pour le tableau de bord
-app.get('/dashboard', (req, res) => {
-  if (req.isAuthenticated()) {
-    res.sendFile(path.join(__dirname, 'views', 'dashboard.html'));
-  } else {
-    res.redirect('/login');
+// Route pour ajouter un nouveau patient
+app.post('/api/patients', async (req, res) => {
+  try {
+    const newPatient = new Patient(req.body);
+    const savedPatient = await newPatient.save();
+    res.status(201).json(savedPatient);
+  } catch (error) {
+    console.error('Erreur lors de l\'ajout du patient:', error);
+    res.status(500).json({ message: 'Erreur interne du serveur' });
   }
 });
 

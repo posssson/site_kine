@@ -1,0 +1,48 @@
+// client/src/components/CalendarPage.js
+import React, { useState, useEffect } from 'react';
+import Calendar from 'react-calendar';
+import axios from 'axios';
+import 'react-calendar/dist/Calendar.css';
+
+const CalendarPage = () => {
+  const [date, setDate] = useState(new Date());
+  const [appointments, setAppointments] = useState([]);
+
+  useEffect(() => {
+    const fetchAppointments = async () => {
+      try {
+        const response = await axios.get('http://192.168.0.18:5000/api/appointments');
+        setAppointments(response.data);
+      } catch (error) {
+        console.error('Erreur lors de la récupération des rendez-vous', error);
+      }
+    };
+
+    fetchAppointments();
+  }, []);
+
+  const handleDateChange = (newDate) => {
+    setDate(newDate);
+  };
+
+  const appointmentsForDate = appointments.filter(
+    (appointment) => new Date(appointment.date).toDateString() === date.toDateString()
+  );
+
+  return (
+    <div>
+      <h2>Calendrier des Patients</h2>
+      <Calendar onChange={handleDateChange} value={date} />
+      <h3>Rendez-vous pour le {date.toDateString()}</h3>
+      <ul>
+        {appointmentsForDate.map((appointment) => (
+          <li key={appointment._id}>
+            {appointment.patientId.name} - {appointment.description}
+          </li>
+        ))}
+      </ul>
+    </div>
+  );
+};
+
+export default CalendarPage;
