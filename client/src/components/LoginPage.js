@@ -8,7 +8,7 @@ const LoginPage = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const navigate = useNavigate();
-  const { login } = useAuth(); // Utiliser le hook pour accéder à la fonction login
+  const { login } = useAuth();
 
   const handleLogin = async (e) => {
     e.preventDefault();
@@ -17,8 +17,9 @@ const LoginPage = () => {
         email,
         password,
       });
+      const token = response.data.token; // Assurez-vous que le serveur renvoie un jeton
+      login(token);
       alert('Connexion réussie!');
-      login(); // Mettre à jour l'état d'authentification
       navigate('/dashboard');
     } catch (error) {
       alert('Mauvais mot de passe!');
