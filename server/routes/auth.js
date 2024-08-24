@@ -13,4 +13,11 @@ router.post('/login', async (req, res) => {
   }
 });
 
+router.post('/signup', (req, res) => {
+  const { email, password } = req.body;
+  // Logique pour créer un nouvel utilisateur
+  // Par exemple, enregistrement dans la base de données
+  res.status(201).send('Compte créé avec succès!');
+});
+
 module.exports = router;

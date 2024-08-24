@@ -1,9 +1,10 @@
 .env
 .env.example
-*node_modules*
+*client/node_modules*
 *log*
-package-lock.json
-package.json
+*.cache*
+*package-lock.json*
+*package.json*
 *chatgpt*
 *chat_gpt*
 log*.txt
