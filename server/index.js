@@ -6,6 +6,9 @@ const authRoutes = require('./routes/auth');
 const app = express();
 app.use(express.json());
 
+const cors = require('cors');
+app.use(cors());
+
 mongoose.connect('mongodb://localhost:27017/kine', {
   useNewUrlParser: true,
   useUnifiedTopology: true,

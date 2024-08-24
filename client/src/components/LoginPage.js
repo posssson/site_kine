@@ -9,12 +9,13 @@ const LoginPage = () => {
   const handleLogin = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.post('http://localhost:5000/login', {
+      const response = await axios.post('http://192.168.0.18:5000/login', {
         email,
         password,
       });
       alert('Connexion réussie!');
     } catch (error) {
+      alert('Mauvais mot de passe!');
       console.error('Erreur lors de la connexion', error);
     }
   };

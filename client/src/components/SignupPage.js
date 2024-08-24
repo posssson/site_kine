@@ -9,13 +9,14 @@ const SignupPage = () => {
   const handleSignup = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.post('http://localhost:5000/signup', {
+      const response = await axios.post('http://192.168.0.18:5000/signup', {
         email,
         password,
       });
       alert('Compte créé avec succès!');
     } catch (error) {
       console.error('Erreur lors de la création du compte', error);
+      alert('Erreur lors de la création du compte');
     }
   };
 
