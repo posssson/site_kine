@@ -1,10 +1,12 @@
 // client/src/components/LoginPage.js
 import React, { useState } from 'react';
 import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 
 const LoginPage = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const navigate = useNavigate(); // Initialiser useNavigate
 
   const handleLogin = async (e) => {
     e.preventDefault();
@@ -13,7 +15,9 @@ const LoginPage = () => {
         email,
         password,
       });
-      alert('Connexion réussie!');
+      // alert('Connexion réussie!');
+      // Rediriger vers le tableau de bord après une connexion réussie
+      navigate('/dashboard');
     } catch (error) {
       alert('Mauvais mot de passe!');
       console.error('Erreur lors de la connexion', error);
