@@ -1,6 +1,6 @@
 .env
 .env.example
-*client/node_modules*
+*node_modules*
 *log*
 *.cache*
 *package-lock.json*
