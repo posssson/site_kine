@@ -2,11 +2,13 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
+import { useAuth } from '../context/AuthContext';
 
 const LoginPage = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const navigate = useNavigate(); // Initialiser useNavigate
+  const navigate = useNavigate();
+  const { login } = useAuth(); // Utiliser le hook pour accéder à la fonction login
 
   const handleLogin = async (e) => {
     e.preventDefault();
@@ -15,8 +17,8 @@ const LoginPage = () => {
         email,
         password,
       });
-      // alert('Connexion réussie!');
-      // Rediriger vers le tableau de bord après une connexion réussie
+      alert('Connexion réussie!');
+      login(); // Mettre à jour l'état d'authentification
       navigate('/dashboard');
     } catch (error) {
       alert('Mauvais mot de passe!');
