@@ -7,7 +7,8 @@ const patientSchema = new mongoose.Schema({
     required: true,
   },
   pathology: {
-    type: String,
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'Pathology', // Référence au modèle Pathology
     required: true,
   },
   // Ajoutez d'autres champs pertinents ici

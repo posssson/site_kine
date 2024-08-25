@@ -9,7 +9,6 @@ const Dashboard = () => {
   const [patients, setPatients] = useState([]);
   const [newPatient, setNewPatient] = useState({ name: '', pathology: '' });
   const [pathologies, setPathologies] = useState([]);
-  const [newPathology, setNewPathology] = useState('');
   const { logout } = useAuth();
   const navigate = useNavigate();
 
@@ -52,23 +51,13 @@ const Dashboard = () => {
     }
   };
 
-  const handleAddPathology = async () => {
-    try {
-      const response = await axios.post('http://192.168.0.18:5000/api/pathologies', { name: newPathology });
-      setPathologies([...pathologies, response.data]);
-      setNewPathology('');
-    } catch (error) {
-      console.error('Erreur lors de l\'ajout de la pathologie', error);
-    }
-  };
-
   return (
     <div>
       <h2>Gestion de Compte</h2>
       <button onClick={handleLogout}>Se déconnecter</button>
       <nav>
         <ul>
-          <li><Link to="/calendar">Calendrier des Patients</Link></li>
+          {/* <li><Link to="/calendar">Calendrier des Patients</Link></li> */}
           <li><Link to="/exercises">Exercices par Pathologie</Link></li>
           <li><Link to="/assign-exercises">Attribuer des Exercices</Link></li>
         </ul>
@@ -98,19 +87,6 @@ const Dashboard = () => {
         </select>
         <button type="submit">Ajouter</button>
       </form>
-      <h3>Gérer les Pathologies</h3>
-      <input
-        type="text"
-        placeholder="Nouvelle pathologie"
-        value={newPathology}
-        onChange={(e) => setNewPathology(e.target.value)}
-      />
-      <button onClick={handleAddPathology}>Ajouter Pathologie</button>
-      <ul>
-        {pathologies.map(pathology => (
-          <li key={pathology._id}>{pathology.name}</li>
-        ))}
-      </ul>
       <CalendarPage patients={patients} />
     </div>
   );

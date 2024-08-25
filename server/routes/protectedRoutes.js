@@ -2,7 +2,7 @@
 const express = require('express');
 const router = express.Router();
 const isAuthenticated = require('../middleware/auth');
-const Pathology = require('./models/Pathologie');
+const Pathology = require('../models/Pathologie');
 const Appointment = require('../models/Appointment'); // Assurez-vous d'avoir un modèle Appointment
 
 // Route pour récupérer les rendez-vous
