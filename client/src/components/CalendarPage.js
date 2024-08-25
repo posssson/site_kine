@@ -11,6 +11,7 @@ const CalendarWrapper = ({ onChange, value }) => {
 const CalendarPage = () => {
   const [date, setDate] = useState(new Date());
   const [appointments, setAppointments] = useState([]);
+  const [newAppointment, setNewAppointment] = useState({ patientName: '', description: '' });
 
   useEffect(() => {
     const fetchAppointments = async () => {
@@ -29,6 +30,25 @@ const CalendarPage = () => {
     setDate(newDate);
   };
 
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    setNewAppointment({ ...newAppointment, [name]: value });
+  };
+
+  const handleAddAppointment = async (e) => {
+    e.preventDefault();
+    try {
+      const response = await axios.post('http://192.168.0.18:5000/api/appointments', {
+        ...newAppointment,
+        date,
+      });
+      setAppointments([...appointments, response.data]);
+      setNewAppointment({ patientName: '', description: '' });
+    } catch (error) {
+      console.error('Erreur lors de l\'ajout du rendez-vous', error);
+    }
+  };
+
   const appointmentsForDate = appointments.filter(
     (appointment) => new Date(appointment.date).toDateString() === date.toDateString()
   );
@@ -41,10 +61,30 @@ const CalendarPage = () => {
       <ul>
         {appointmentsForDate.map((appointment) => (
           <li key={appointment._id}>
-            {appointment.patientId.name} - {appointment.description}
+            {appointment.patientName} - {appointment.description}
           </li>
         ))}
       </ul>
+      <h3>Ajouter un Rendez-vous</h3>
+      <form onSubmit={handleAddAppointment}>
+        <input
+          type="text"
+          name="patientName"
+          placeholder="Nom du patient"
+          value={newAppointment.patientName}
+          onChange={handleInputChange}
+          required
+        />
+        <input
+          type="text"
+          name="description"
+          placeholder="Description"
+          value={newAppointment.description}
+          onChange={handleInputChange}
+          required
+        />
+        <button type="submit">Ajouter</button>
+      </form>
     </div>
   );
 };
