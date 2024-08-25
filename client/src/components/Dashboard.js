@@ -42,6 +42,10 @@ const Dashboard = () => {
 
   const handleAddPatient = async (e) => {
     e.preventDefault();
+    if (!newPatient.name || !newPatient.pathology) {
+      console.error('Le nom du patient et la pathologie doivent être renseignés.');
+      return;
+    }
     try {
       const response = await axios.post('http://192.168.0.18:5000/api/patients', newPatient);
       setPatients([...patients, response.data]);
@@ -63,11 +67,15 @@ const Dashboard = () => {
         </ul>
       </nav>
       <h3>Liste des Patients</h3>
-      <ul>
-        {patients.map(patient => (
-          <li key={patient._id}>{patient.name} - {patient.pathology}</li>
-        ))}
-      </ul>
+      {patients.length === 0 ? (
+        <p>Aucun patient à afficher.</p>
+      ) : (
+        <ul>
+          {patients.map(patient => (
+            <li key={patient._id}>{patient.name} - {patient.pathology}</li>
+          ))}
+        </ul>
+      )}
       <h3>Ajouter un Nouveau Patient</h3>
       <form onSubmit={handleAddPatient}>
         <input
@@ -81,13 +89,17 @@ const Dashboard = () => {
           onChange={(e) => setNewPatient({ ...newPatient, pathology: e.target.value })}
         >
           <option value="">Sélectionner une pathologie</option>
-          {pathologies.map(pathology => (
-            <option key={pathology._id} value={pathology.name}>{pathology.name}</option>
-          ))}
+          {pathologies.length === 0 ? (
+            <option disabled>Aucune pathologie disponible</option>
+          ) : (
+            pathologies.map(pathology => (
+              <option key={pathology._id} value={pathology.name}>{pathology.name}</option>
+            ))
+          )}
         </select>
         <button type="submit">Ajouter</button>
       </form>
-      <CalendarPage patients={patients} />
+      <CalendarPage patients={patients || []} />
     </div>
   );
 };

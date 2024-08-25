@@ -61,7 +61,7 @@ const CalendarPage = ({ patients }) => {
       <ul>
         {appointmentsForDate.map((appointment) => (
           <li key={appointment._id}>
-            {appointment.patientId.name} - {appointment.description} à {appointment.time}
+            {appointment.patientId?.name || 'Nom non disponible'} - {appointment.description} à {appointment.time}
           </li>
         ))}
       </ul>
@@ -74,11 +74,15 @@ const CalendarPage = ({ patients }) => {
           required
         >
           <option value="">Sélectionner un patient</option>
-          {patients.map(patient => (
-            <option key={patient._id} value={patient._id}>
-              {patient.name}
-            </option>
-          ))}
+          {patients && patients.length > 0 ? (
+            patients.map(patient => (
+              <option key={patient._id} value={patient._id}>
+                {patient.name}
+              </option>
+            ))
+          ) : (
+            <option disabled>Aucun patient disponible</option>
+          )}
         </select>
         <input
           type="time"
