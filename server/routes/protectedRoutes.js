@@ -3,6 +3,7 @@ const express = require('express');
 const router = express.Router();
 const isAuthenticated = require('../middleware/auth');
 const Pathology = require('../models/Pathologie');
+const Patient = require('../models/Patient');
 const Appointment = require('../models/Appointment'); // Assurez-vous d'avoir un modèle Appointment
 
 // Route pour récupérer les rendez-vous
@@ -77,13 +78,13 @@ router.get('/pathologies', isAuthenticated, async (req, res) => {
 });
 
 // Route pour récupérer les patients
-router.get('/patients', isAuthenticated, async (req, res) => {
+// Exemple de route pour récupérer les patients avec les détails de la pathologie
+router.get('/patients', async (req, res) => {
   try {
-    const patients = await Patient.find();
+    const patients = await Patient.find().populate('pathology');
     res.json(patients);
   } catch (error) {
-    console.error('Erreur lors de la récupération des patients:', error);
-    res.status(500).json({ message: 'Erreur interne du serveur' });
+    res.status(500).json({ message: 'Erreur lors de la récupération des patients' });
   }
 });
 

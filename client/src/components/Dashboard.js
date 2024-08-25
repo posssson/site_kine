@@ -47,13 +47,25 @@ const Dashboard = () => {
       return;
     }
     try {
-      const response = await axios.post('http://192.168.0.18:5000/api/patients', newPatient);
+      // Ensure the pathology is an ObjectId
+      const selectedPathology = pathologies.find(p => p._id === newPatient.pathology);
+      if (!selectedPathology) {
+        console.error('Pathologie sélectionnée invalide.');
+        return;
+      }
+
+      const response = await axios.post('http://192.168.0.18:5000/api/patients', {
+        name: newPatient.name,
+        pathology: selectedPathology._id // Use the ObjectId
+      });
+
       setPatients([...patients, response.data]);
       setNewPatient({ name: '', pathology: '' });
     } catch (error) {
       console.error('Erreur lors de l\'ajout du patient', error);
     }
   };
+
 
   return (
     <div>
@@ -72,7 +84,9 @@ const Dashboard = () => {
       ) : (
         <ul>
           {patients.map(patient => (
-            <li key={patient._id}>{patient.name} - {patient.pathology}</li>
+            <li key={patient._id}>
+              {patient.name} - {patient.pathology.name}
+            </li>
           ))}
         </ul>
       )}
@@ -93,7 +107,7 @@ const Dashboard = () => {
             <option disabled>Aucune pathologie disponible</option>
           ) : (
             pathologies.map(pathology => (
-              <option key={pathology._id} value={pathology.name}>{pathology.name}</option>
+              <option key={pathology._id} value={pathology._id}>{pathology.name}</option>
             ))
           )}
         </select>

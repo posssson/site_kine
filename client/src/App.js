@@ -8,6 +8,10 @@ import Dashboard from './components/Dashboard';
 import CalendarPage from './components/CalendarPage';
 import Pathologies from './components/Pathologies';
 import { AuthProvider, useAuth } from './context/AuthContext';
+import axios from 'axios';
+
+// Configure Axios pour inclure les cookies dans chaque requête
+axios.defaults.withCredentials = true;
 
 const App = () => {
   return (

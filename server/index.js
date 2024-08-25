@@ -10,7 +10,12 @@ const protectedRoutes = require('./routes/protectedRoutes');
 const app = express();
 
 app.use(express.json());
-app.use(cors());
+const corsOptions = {
+  origin: 'http://192.168.0.18:4500', // Replace with your client's origin
+  credentials: true, // Allow credentials (cookies, authorization headers, etc.)
+};
+
+app.use(cors(corsOptions));
 
 // Configuration de la session
 app.use(session({
