@@ -17,9 +17,9 @@ app.use(session({
   secret: 'your_secret_key',
   resave: false,
   saveUninitialized: false,
+  cookie: { secure: false } // Assurez-vous que 'secure' est false si vous n'utilisez pas HTTPS
 }));
 
-// Initialisation de Passport
 app.use(passport.initialize());
 app.use(passport.session());
 

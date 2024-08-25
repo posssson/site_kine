@@ -17,7 +17,7 @@ router.post('/login', (req, res, next) => {
       if (err) {
         return res.status(500).json({ message: 'Erreur lors de la connexion' });
       }
-      return res.status(200).json({ message: 'Connexion réussie!', token: 'votre_token' });
+      return res.status(200).json({ message: 'Connexion réussie!' });
     });
   })(req, res, next);
 });
