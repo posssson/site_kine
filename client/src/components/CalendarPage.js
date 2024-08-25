@@ -8,10 +8,10 @@ const CalendarWrapper = ({ onChange, value }) => {
   return <Calendar onChange={onChange} value={value} />;
 };
 
-const CalendarPage = () => {
+const CalendarPage = ({ patients }) => {
   const [date, setDate] = useState(new Date());
   const [appointments, setAppointments] = useState([]);
-  const [newAppointment, setNewAppointment] = useState({ patientName: '', description: '' });
+  const [newAppointment, setNewAppointment] = useState({ patientId: '', description: '', time: '' });
 
   useEffect(() => {
     const fetchAppointments = async () => {
@@ -40,10 +40,10 @@ const CalendarPage = () => {
     try {
       const response = await axios.post('http://192.168.0.18:5000/api/appointments', {
         ...newAppointment,
-        date,
+        date: date.toISOString().split('T')[0], // Format de la date
       });
       setAppointments([...appointments, response.data]);
-      setNewAppointment({ patientName: '', description: '' });
+      setNewAppointment({ patientId: '', description: '', time: '' });
     } catch (error) {
       console.error('Erreur lors de l\'ajout du rendez-vous', error);
     }
@@ -61,17 +61,29 @@ const CalendarPage = () => {
       <ul>
         {appointmentsForDate.map((appointment) => (
           <li key={appointment._id}>
-            {appointment.patientName} - {appointment.description}
+            {appointment.patientId.name} - {appointment.description} à {appointment.time}
           </li>
         ))}
       </ul>
       <h3>Ajouter un Rendez-vous</h3>
       <form onSubmit={handleAddAppointment}>
+        <select
+          name="patientId"
+          value={newAppointment.patientId}
+          onChange={handleInputChange}
+          required
+        >
+          <option value="">Sélectionner un patient</option>
+          {patients.map(patient => (
+            <option key={patient._id} value={patient._id}>
+              {patient.name}
+            </option>
+          ))}
+        </select>
         <input
-          type="text"
-          name="patientName"
-          placeholder="Nom du patient"
-          value={newAppointment.patientName}
+          type="time"
+          name="time"
+          value={newAppointment.time}
           onChange={handleInputChange}
           required
         />

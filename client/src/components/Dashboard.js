@@ -3,6 +3,7 @@ import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
+import CalendarPage from './CalendarPage'; // Importer le composant CalendarPage
 
 const Dashboard = () => {
   const [patients, setPatients] = useState([]);
@@ -72,6 +73,7 @@ const Dashboard = () => {
         />
         <button type="submit">Ajouter</button>
       </form>
+      <CalendarPage patients={patients} /> {/* Passer les patients à CalendarPage */}
     </div>
   );
 };

@@ -27,28 +27,7 @@ app.get('/', (req, res) => {
   res.send('Bienvenue sur la page d\'accueil!');
 });
 
-// Route pour récupérer les patients
-app.get('/api/patients', async (req, res) => {
-  try {
-    const patients = await Patient.find();
-    res.json(patients);
-  } catch (error) {
-    console.error('Erreur lors de la récupération des patients:', error);
-    res.status(500).json({ message: 'Erreur interne du serveur' });
-  }
-});
 
-// Route pour ajouter un nouveau patient
-app.post('/api/patients', async (req, res) => {
-  try {
-    const newPatient = new Patient(req.body);
-    const savedPatient = await newPatient.save();
-    res.status(201).json(savedPatient);
-  } catch (error) {
-    console.error('Erreur lors de l\'ajout du patient:', error);
-    res.status(500).json({ message: 'Erreur interne du serveur' });
-  }
-});
 
 const PORT = 5000;
 app.listen(PORT, () => {

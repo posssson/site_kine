@@ -53,4 +53,52 @@ router.get('/calendar', isAuthenticated, async (req, res) => {
   }
 });
 
+let pathologies = []; // Stockage temporaire des pathologies
+
+// Route pour créer une nouvelle pathologie
+app.post('/api/pathologies', isAuthenticated, async(req, res) => {
+  try {
+    const { name, description } = req.body;
+    const newPathology = new Pathology({ name, description });
+    await newPathology.save();
+    res.status(201).json(newPathology);
+  } catch (error) {
+    res.status(400).json({ message: error.message });
+  }
+});
+
+// Route pour obtenir toutes les pathologies
+app.get('/api/pathologies', isAuthenticated, async(req, res) => {
+  try {
+    const pathologies = await Pathology.find();
+    res.json(pathologies);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+});
+
+// Route pour récupérer les patients
+app.get('/api/patients', isAuthenticated, async (req, res) => {
+  try {
+    const patients = await Patient.find();
+    res.json(patients);
+  } catch (error) {
+    console.error('Erreur lors de la récupération des patients:', error);
+    res.status(500).json({ message: 'Erreur interne du serveur' });
+  }
+});
+
+// Route pour ajouter un nouveau patient
+app.post('/api/patients', isAuthenticated, async (req, res) => {
+  try {
+    const newPatient = new Patient(req.body);
+    const savedPatient = await newPatient.save();
+    res.status(201).json(savedPatient);
+  } catch (error) {
+    console.error('Erreur lors de l\'ajout du patient:', error);
+    res.status(500).json({ message: 'Erreur interne du serveur' });
+  }
+});
+
+
 module.exports = router;
