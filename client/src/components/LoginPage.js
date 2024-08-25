@@ -17,11 +17,17 @@ const LoginPage = () => {
         email,
         password,
       });
-      const token = response.data.token; // Assurez-vous que le serveur renvoie un jeton
-      login(token);
-      navigate('/dashboard');
+
+      if (response.status === 200) {
+        console.log('Connexion réussie!');
+        const token = response.data.token;
+        login(token);
+        navigate('/dashboard'); // Assurez-vous que la redirection est correcte
+      } else {
+        alert(response.data.message || 'Mauvais mot de passe!');
+      }
     } catch (error) {
-      alert('Mauvais mot de passe!');
+      alert('Erreur lors de la connexion');
       console.error('Erreur lors de la connexion', error);
     }
   };

@@ -14,7 +14,9 @@ export const AuthProvider = ({ children }) => {
 
   // Fonction pour gérer la connexion
   const login = (token) => {
-    localStorage.setItem('authToken', token);
+    if (token) {
+      localStorage.setItem('authToken', token);
+    }
     setIsAuthenticated(true);
   };
 

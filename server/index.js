@@ -3,11 +3,12 @@ const express = require('express');
 const mongoose = require('mongoose');
 const cors = require('cors');
 const session = require('express-session');
-const passport = require('./config/passport'); // Importez votre configuration Passport
+const passport = require('./config/passport');
 const authRoutes = require('./routes/auth');
 const protectedRoutes = require('./routes/protectedRoutes');
 
 const app = express();
+
 app.use(express.json());
 app.use(cors());
 
@@ -32,8 +33,10 @@ mongoose.connect('mongodb://localhost:27017/kine', {
   console.error('Error connecting to MongoDB:', error);
 });
 
-// Utilisation des routes
+// Monte les routes d'authentification sans préfixe, donc /login est accessible
 app.use(authRoutes);
+
+// Monte les routes protégées avec le préfixe /api
 app.use('/api', protectedRoutes);
 
 app.get('/', (req, res) => {

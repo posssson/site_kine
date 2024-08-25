@@ -11,14 +11,18 @@ passport.use(new LocalStrategy({
   try {
     const user = await User.findOne({ email });
     if (!user) {
+      console.log('User not found');
       return done(null, false, { message: 'Identifiants incorrects' });
     }
     const isMatch = await bcrypt.compare(password, user.password);
     if (!isMatch) {
+      console.log('Password does not match');
       return done(null, false, { message: 'Identifiants incorrects' });
     }
+    console.log('Password matches');
     return done(null, user);
   } catch (error) {
+    console.error('Error during authentication:', error);
     return done(error);
   }
 }));
