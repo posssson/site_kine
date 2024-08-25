@@ -11,23 +11,23 @@ import { AuthProvider, useAuth } from './context/AuthContext';
 const App = () => {
   return (
     <AuthProvider>
-    <Router>
-      <Routes>
-        <Route path="/" element={<HomePage />} />
-        <Route path="/login" element={<LoginPage />} />
-        <Route path="/signup" element={<SignupPage />} />
-        <Route path="/dashboard" element={<PrivateRoute />} />
-        <Route path="/calendar" element={<CalendarPage />} />
-      </Routes>
-    </Router>
+      <Router>
+        <Routes>
+          <Route path="/" element={<HomePage />} />
+          <Route path="/login" element={<LoginPage />} />
+          <Route path="/signup" element={<SignupPage />} />
+          <Route path="/dashboard" element={<PrivateRoute component={Dashboard} />} />
+          <Route path="/calendar" element={<PrivateRoute component={CalendarPage} />} />
+        </Routes>
+      </Router>
     </AuthProvider>
   );
 };
 
 // Composant de route privée
-const PrivateRoute = () => {
+const PrivateRoute = ({ component: Component }) => {
   const { isAuthenticated } = useAuth();
-  return isAuthenticated ? <Dashboard /> : <Navigate to="/login" />;
+  return isAuthenticated ? <Component /> : <Navigate to="/login" />;
 };
 
 export default App;

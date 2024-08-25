@@ -1,8 +1,14 @@
 // client/src/components/CalendarPage.js
-import React, { useState, useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
+import { useAuth } from '../context/AuthContext';
 import Calendar from 'react-calendar';
 import axios from 'axios';
 import 'react-calendar/dist/Calendar.css';
+
+const CalendarWrapper = ({ onChange, value }) => {
+  return <Calendar onChange={onChange} value={value} />;
+};
 
 const CalendarPage = () => {
   const [date, setDate] = useState(new Date());
@@ -32,7 +38,7 @@ const CalendarPage = () => {
   return (
     <div>
       <h2>Calendrier des Patients</h2>
-      <Calendar onChange={handleDateChange} value={date} />
+      <CalendarWrapper onChange={handleDateChange} value={date} />
       <h3>Rendez-vous pour le {date.toDateString()}</h3>
       <ul>
         {appointmentsForDate.map((appointment) => (
