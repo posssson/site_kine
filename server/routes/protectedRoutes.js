@@ -2,6 +2,7 @@
 const express = require('express');
 const router = express.Router();
 const isAuthenticated = require('../middleware/auth');
+const Pathology = require('./models/Pathologie');
 const Appointment = require('../models/Appointment'); // Assurez-vous d'avoir un modèle Appointment
 
 // Route pour récupérer les rendez-vous
@@ -53,10 +54,8 @@ router.get('/calendar', isAuthenticated, async (req, res) => {
   }
 });
 
-let pathologies = []; // Stockage temporaire des pathologies
-
 // Route pour créer une nouvelle pathologie
-app.post('/api/pathologies', isAuthenticated, async(req, res) => {
+app.post('/api/pathologies', isAuthenticated, async (req, res) => {
   try {
     const { name, description } = req.body;
     const newPathology = new Pathology({ name, description });
@@ -68,7 +67,7 @@ app.post('/api/pathologies', isAuthenticated, async(req, res) => {
 });
 
 // Route pour obtenir toutes les pathologies
-app.get('/api/pathologies', isAuthenticated, async(req, res) => {
+app.get('/api/pathologies', isAuthenticated, async (req, res) => {
   try {
     const pathologies = await Pathology.find();
     res.json(pathologies);

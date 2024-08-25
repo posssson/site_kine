@@ -6,6 +6,7 @@ import LoginPage from './components/LoginPage';
 import SignupPage from './components/SignupPage';
 import Dashboard from './components/Dashboard';
 import CalendarPage from './components/CalendarPage';
+import Pathologies from './components/Pathologies';
 import { AuthProvider, useAuth } from './context/AuthContext';
 
 const App = () => {

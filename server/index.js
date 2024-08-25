@@ -5,6 +5,7 @@ const cors = require('cors');
 const path = require('path');
 const authRoutes = require('./routes/auth');
 const Patient = require('./models/Patient');
+const Pathology = require('./models/Pathologie');
 const appointmentRoutes = require('./routes/appointments');
 
 const app = express();

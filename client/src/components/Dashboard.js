@@ -3,11 +3,13 @@ import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
-import CalendarPage from './CalendarPage'; // Importer le composant CalendarPage
+import CalendarPage from './CalendarPage';
 
 const Dashboard = () => {
   const [patients, setPatients] = useState([]);
   const [newPatient, setNewPatient] = useState({ name: '', pathology: '' });
+  const [pathologies, setPathologies] = useState([]);
+  const [newPathology, setNewPathology] = useState('');
   const { logout } = useAuth();
   const navigate = useNavigate();
 
@@ -21,7 +23,17 @@ const Dashboard = () => {
       }
     };
 
+    const fetchPathologies = async () => {
+      try {
+        const response = await axios.get('http://192.168.0.18:5000/api/pathologies');
+        setPathologies(response.data);
+      } catch (error) {
+        console.error('Erreur lors de la récupération des pathologies', error);
+      }
+    };
+
     fetchPatients();
+    fetchPathologies();
   }, []);
 
   const handleLogout = () => {
@@ -37,6 +49,16 @@ const Dashboard = () => {
       setNewPatient({ name: '', pathology: '' });
     } catch (error) {
       console.error('Erreur lors de l\'ajout du patient', error);
+    }
+  };
+
+  const handleAddPathology = async () => {
+    try {
+      const response = await axios.post('http://192.168.0.18:5000/api/pathologies', { name: newPathology });
+      setPathologies([...pathologies, response.data]);
+      setNewPathology('');
+    } catch (error) {
+      console.error('Erreur lors de l\'ajout de la pathologie', error);
     }
   };
 
@@ -65,15 +87,31 @@ const Dashboard = () => {
           value={newPatient.name}
           onChange={(e) => setNewPatient({ ...newPatient, name: e.target.value })}
         />
-        <input
-          type="text"
-          placeholder="Pathologie"
+        <select
           value={newPatient.pathology}
           onChange={(e) => setNewPatient({ ...newPatient, pathology: e.target.value })}
-        />
+        >
+          <option value="">Sélectionner une pathologie</option>
+          {pathologies.map(pathology => (
+            <option key={pathology._id} value={pathology.name}>{pathology.name}</option>
+          ))}
+        </select>
         <button type="submit">Ajouter</button>
       </form>
-      <CalendarPage patients={patients} /> {/* Passer les patients à CalendarPage */}
+      <h3>Gérer les Pathologies</h3>
+      <input
+        type="text"
+        placeholder="Nouvelle pathologie"
+        value={newPathology}
+        onChange={(e) => setNewPathology(e.target.value)}
+      />
+      <button onClick={handleAddPathology}>Ajouter Pathologie</button>
+      <ul>
+        {pathologies.map(pathology => (
+          <li key={pathology._id}>{pathology.name}</li>
+        ))}
+      </ul>
+      <CalendarPage patients={patients} />
     </div>
   );
 };
