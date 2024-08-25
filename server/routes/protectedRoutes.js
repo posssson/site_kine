@@ -32,6 +32,25 @@ router.get('/dashboard', isAuthenticated, (req, res) => {
     res.send('Bienvenue sur votre tableau de bord!');
   });
 
-// Autres routes pour mettre à jour et supprimer des rendez-vous peuvent être ajoutées ici
+// Route pour le calendrier
+router.get('/calendar', isAuthenticated, async (req, res) => {
+  try {
+    const { month, year } = req.query;
+    const startDate = new Date(year, month - 1, 1);
+    const endDate = new Date(year, month, 0);
+
+    const appointments = await Appointment.find({
+      userId: req.user.id,
+      date: {
+        $gte: startDate,
+        $lte: endDate,
+      },
+    });
+
+    res.json(appointments);
+  } catch (error) {
+    res.status(500).json({ error: 'Erreur lors de la récupération des données du calendrier' });
+  }
+});
 
 module.exports = router;

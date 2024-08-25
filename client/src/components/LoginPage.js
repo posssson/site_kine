@@ -19,7 +19,6 @@ const LoginPage = () => {
       });
       const token = response.data.token; // Assurez-vous que le serveur renvoie un jeton
       login(token);
-      alert('Connexion réussie!');
       navigate('/dashboard');
     } catch (error) {
       alert('Mauvais mot de passe!');
