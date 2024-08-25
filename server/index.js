@@ -4,9 +4,7 @@ const mongoose = require('mongoose');
 const cors = require('cors');
 const path = require('path');
 const authRoutes = require('./routes/auth');
-const Patient = require('./models/Patient');
-const Pathology = require('./models/Pathologie');
-const appointmentRoutes = require('./routes/appointments');
+const protectedRoutes = require('./routes/protectedRoutes'); // Assurez-vous d'importer correctement vos routes protégées
 
 const app = express();
 app.use(express.json());
@@ -21,14 +19,13 @@ mongoose.connect('mongodb://localhost:27017/kine', {
   console.error('Error connecting to MongoDB:', error);
 });
 
+// Utilisation des routes
 app.use(authRoutes);
-app.use('/api/appointments', appointmentRoutes);
+app.use('/api', protectedRoutes); // Assurez-vous que vos routes protégées sont correctement définies
 
 app.get('/', (req, res) => {
   res.send('Bienvenue sur la page d\'accueil!');
 });
-
-
 
 const PORT = 5000;
 app.listen(PORT, () => {

@@ -55,7 +55,7 @@ router.get('/calendar', isAuthenticated, async (req, res) => {
 });
 
 // Route pour créer une nouvelle pathologie
-app.post('/api/pathologies', isAuthenticated, async (req, res) => {
+router.post('/pathologies', isAuthenticated, async (req, res) => {
   try {
     const { name, description } = req.body;
     const newPathology = new Pathology({ name, description });
@@ -67,7 +67,7 @@ app.post('/api/pathologies', isAuthenticated, async (req, res) => {
 });
 
 // Route pour obtenir toutes les pathologies
-app.get('/api/pathologies', isAuthenticated, async (req, res) => {
+router.get('/pathologies', isAuthenticated, async (req, res) => {
   try {
     const pathologies = await Pathology.find();
     res.json(pathologies);
@@ -77,7 +77,7 @@ app.get('/api/pathologies', isAuthenticated, async (req, res) => {
 });
 
 // Route pour récupérer les patients
-app.get('/api/patients', isAuthenticated, async (req, res) => {
+router.get('/patients', isAuthenticated, async (req, res) => {
   try {
     const patients = await Patient.find();
     res.json(patients);
@@ -88,7 +88,7 @@ app.get('/api/patients', isAuthenticated, async (req, res) => {
 });
 
 // Route pour ajouter un nouveau patient
-app.post('/api/patients', isAuthenticated, async (req, res) => {
+router.post('/patients', isAuthenticated, async (req, res) => {
   try {
     const newPatient = new Patient(req.body);
     const savedPatient = await newPatient.save();
@@ -99,5 +99,27 @@ app.post('/api/patients', isAuthenticated, async (req, res) => {
   }
 });
 
+
+
+// Créer un rendez-vous
+router.post('/', async (req, res) => {
+  try {
+    const appointment = new Appointment(req.body);
+    await appointment.save();
+    res.status(201).json(appointment);
+  } catch (error) {
+    res.status(400).json({ error: error.message });
+  }
+});
+
+// Récupérer tous les rendez-vous
+router.get('/', async (req, res) => {
+  try {
+    const appointments = await Appointment.find().populate('patientId');
+    res.json(appointments);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});
 
 module.exports = router;
