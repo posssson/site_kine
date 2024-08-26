@@ -9,7 +9,8 @@ const Appointment = require('../models/Appointment'); // Assurez-vous d'avoir un
 // Route pour récupérer les rendez-vous
 router.get('/appointments', isAuthenticated, async (req, res) => {
   try {
-    const appointments = await Appointment.find({ userId: req.user.id }); // Filtrer par utilisateur
+    // Utilisez populate pour inclure les informations du patient
+    const appointments = await Appointment.find({ userId: req.user.id }).populate('patientId');
     res.json(appointments);
   } catch (error) {
     res.status(500).json({ error: 'Erreur lors de la récupération des rendez-vous' });

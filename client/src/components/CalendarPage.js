@@ -23,7 +23,6 @@ const CalendarPage = ({ patients }) => {
         console.error('Erreur lors de la récupération des rendez-vous', error);
       }
     };
-  
     fetchAppointments();
   }, []);
 
@@ -62,7 +61,7 @@ const CalendarPage = ({ patients }) => {
       <ul>
         {appointmentsForDate.map((appointment) => (
           <li key={appointment._id}>
-            {appointment.patientId?.name || 'Nom non disponible'} - {appointment.description} à {appointment.time}
+            {appointment.patientId?.name || 'Nom non disponible'} - {appointment.description || 'Pas de description'} à {appointment.date || 'Heure non spécifiée'}
           </li>
         ))}
       </ul>
