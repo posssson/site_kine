@@ -17,12 +17,13 @@ const CalendarPage = ({ patients }) => {
     const fetchAppointments = async () => {
       try {
         const response = await axios.get('http://192.168.0.18:5000/api/appointments');
+        console.log('Rendez-vous reçus:', response.data); // Vérifiez les données ici
         setAppointments(response.data);
       } catch (error) {
         console.error('Erreur lors de la récupération des rendez-vous', error);
       }
     };
-
+  
     fetchAppointments();
   }, []);
 

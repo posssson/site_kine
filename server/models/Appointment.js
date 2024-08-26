@@ -7,6 +7,11 @@ const appointmentSchema = new mongoose.Schema({
     ref: 'Patient',
     required: true,
   },
+  userId: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'User', // Assurez-vous que le modèle User existe
+    required: true,
+  },
   date: {
     type: Date,
     required: true,
