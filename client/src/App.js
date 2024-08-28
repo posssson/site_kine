@@ -25,7 +25,7 @@ const App = () => {
           <Route path="/dashboard" element={<PrivateRoute component={Dashboard} />} />
           <Route path="/calendar" element={<PrivateRoute component={CalendarPage} />} />
           <Route path="/pathologies" element={<PrivateRoute  component={Pathologies} />} />
-          <Route path="/exercises" element={<PrivateRoute  component={Exercises} />} />
+          <Route path="/exercises" element={<PrivateRoute  component={Exercices} />} />
         </Routes>
       </Router>
     </AuthProvider>

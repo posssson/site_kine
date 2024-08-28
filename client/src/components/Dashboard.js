@@ -74,6 +74,7 @@ const Dashboard = () => {
       <nav>
         <ul>
           {/* <li><Link to="/calendar">Calendrier des Patients</Link></li> */}
+          <li><Link to="/pathologies">Ajouter Pathologie</Link></li>
           <li><Link to="/exercises">Exercices par Pathologie</Link></li>
           <li><Link to="/assign-exercises">Attribuer des Exercices</Link></li>
         </ul>

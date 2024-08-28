@@ -9,7 +9,7 @@ const Exercise = require('../models/Exercise');
 
 
 // Route pour ajouter un exercice
-app.post('/exercises', isAuthenticated, async (req, res) => {
+router.post('/exercises', isAuthenticated, async (req, res) => {
   try {
     const { name, description, pathologyIds } = req.body;
     const exercise = new Exercise({ name, description, pathologies: pathologyIds });
@@ -21,7 +21,7 @@ app.post('/exercises', isAuthenticated, async (req, res) => {
 });
 
 // Route pour obtenir les exercices
-app.get('/exercises', isAuthenticated, async (req, res) => {
+router.get('/exercises', isAuthenticated, async (req, res) => {
   try {
     const exercises = await Exercise.find().populate('pathologies');
     res.json(exercises);

@@ -1,6 +1,7 @@
 // client/src/components/Exercises.js
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import './Exercises.css'; // Assurez-vous d'avoir un fichier CSS pour le style
 
 const Exercises = () => {
   const [exercises, setExercises] = useState([]);
@@ -10,10 +11,10 @@ const Exercises = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const pathologiesResponse = await axios.get('http://localhost:5000/api/pathologies');
+        const pathologiesResponse = await axios.get('http://192.168.0.18:5000/api/pathologies');
         setPathologies(pathologiesResponse.data);
 
-        const exercisesResponse = await axios.get('http://localhost:5000/api/exercises');
+        const exercisesResponse = await axios.get('http://192.168.0.18:5000/api/exercises');
         setExercises(exercisesResponse.data);
       } catch (error) {
         console.error('Erreur lors de la récupération des données', error);
@@ -25,7 +26,7 @@ const Exercises = () => {
 
   const handleAddExercise = async () => {
     try {
-      const response = await axios.post('http://localhost:5000/api/exercises', newExercise);
+      const response = await axios.post('http://192.168.0.18:5000/api/exercises', newExercise);
       setExercises([...exercises, response.data]);
       setNewExercise({ name: '', description: '', pathologyIds: [] });
     } catch (error) {
@@ -43,7 +44,7 @@ const Exercises = () => {
   };
 
   return (
-    <div>
+    <div className="container">
       <h2>Ajouter un Exercice</h2>
       <input
         type="text"
@@ -60,7 +61,7 @@ const Exercises = () => {
       <div>
         <h3>Associer des Pathologies</h3>
         {pathologies.map((pathology) => (
-          <div key={pathology._id}>
+          <div key={pathology._id} className="checkbox-container">
             <input
               type="checkbox"
               checked={newExercise.pathologyIds.includes(pathology._id)}
