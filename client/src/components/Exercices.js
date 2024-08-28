@@ -9,13 +9,15 @@ const Exercises = () => {
   const [newExercise, setNewExercise] = useState({ name: '', description: '', pathologyIds: [] });
   const [editingExerciseId, setEditingExerciseId] = useState(null);
 
+  const apiUrl = process.env.REACT_APP_API_URL;
+
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const pathologiesResponse = await axios.get('http://192.168.0.18:5000/api/pathologies');
+        const pathologiesResponse = await axios.get(`${apiUrl}/api/pathologies`);
         setPathologies(pathologiesResponse.data);
 
-        const exercisesResponse = await axios.get('http://192.168.0.18:5000/api/exercises');
+        const exercisesResponse = await axios.get(`${apiUrl}/api/exercises`);
         setExercises(exercisesResponse.data);
       } catch (error) {
         console.error('Erreur lors de la récupération des données', error);
@@ -23,7 +25,7 @@ const Exercises = () => {
     };
 
     fetchData();
-  }, []);
+  }, [apiUrl]);
 
   const handleAddOrUpdateExercise = async () => {
     if (!newExercise.name) {
@@ -33,18 +35,25 @@ const Exercises = () => {
 
     try {
       if (editingExerciseId) {
-        // Mise à jour de l'exercice existant
-        const response = await axios.put(`http://192.168.0.18:5000/api/exercises/${editingExerciseId}`, newExercise);
+        const response = await axios.put(`${apiUrl}/api/exercises/${editingExerciseId}`, newExercise);
         setExercises(exercises.map(ex => ex._id === editingExerciseId ? response.data : ex));
         setEditingExerciseId(null);
       } else {
-        // Ajout d'un nouvel exercice
-        const response = await axios.post('http://192.168.0.18:5000/api/exercises', newExercise);
+        const response = await axios.post(`${apiUrl}/api/exercises`, newExercise);
         setExercises([...exercises, response.data]);
       }
       setNewExercise({ name: '', description: '', pathologyIds: [] });
     } catch (error) {
       console.error('Erreur lors de l\'ajout ou de la mise à jour de l\'exercice', error);
+    }
+  };
+
+  const handleDeleteExercise = async (exerciseId) => {
+    try {
+      await axios.delete(`${apiUrl}/api/exercises/${exerciseId}`);
+      setExercises(exercises.filter(ex => ex._id !== exerciseId));
+    } catch (error) {
+      console.error('Erreur lors de la suppression de l\'exercice', error);
     }
   };
 
@@ -108,6 +117,8 @@ const Exercises = () => {
               ))}
             </ul>
             <button onClick={() => handleEditExercise(exercise)}>Modifier</button>
+            <button className="delete-button" onClick={() => handleDeleteExercise(exercise._id)}>Supprimer</button>
+
           </li>
         ))}
       </ul>

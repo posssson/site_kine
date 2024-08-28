@@ -30,6 +30,37 @@ router.get('/exercises', isAuthenticated, async (req, res) => {
   }
 });
 
+// Route pour mettre à jour un exercice
+router.put('/exercises/:id', isAuthenticated, async (req, res) => {
+  try {
+    const { name, description, pathologyIds } = req.body;
+    const exercise = await Exercise.findByIdAndUpdate(
+      req.params.id,
+      { name, description, pathologies: pathologyIds },
+      { new: true, runValidators: true }
+    );
+    if (!exercise) {
+      return res.status(404).json({ error: 'Exercice non trouvé' });
+    }
+    res.status(200).json(exercise);
+  } catch (error) {
+    res.status(400).json({ error: 'Erreur lors de la mise à jour de l\'exercice' });
+  }
+});
+
+// Route pour supprimer un exercice
+router.delete('/exercises/:id', isAuthenticated, async (req, res) => {
+  try {
+    const exercise = await Exercise.findByIdAndDelete(req.params.id);
+    if (!exercise) {
+      return res.status(404).json({ error: 'Exercice non trouvé' });
+    }
+    res.status(200).json({ message: 'Exercice supprimé avec succès' });
+  } catch (error) {
+    res.status(500).json({ error: 'Erreur lors de la suppression de l\'exercice' });
+  }
+});
+
 // Route pour récupérer les rendez-vous
 router.get('/appointments', isAuthenticated, async (req, res) => {
   try {
