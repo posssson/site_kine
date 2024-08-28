@@ -7,6 +7,7 @@ import SignupPage from './components/SignupPage';
 import Dashboard from './components/Dashboard';
 import CalendarPage from './components/CalendarPage';
 import Pathologies from './components/Pathologies';
+import Exercices from './components/Exercices';
 import { AuthProvider, useAuth } from './context/AuthContext';
 import axios from 'axios';
 
@@ -23,7 +24,8 @@ const App = () => {
           <Route path="/signup" element={<SignupPage />} />
           <Route path="/dashboard" element={<PrivateRoute component={Dashboard} />} />
           <Route path="/calendar" element={<PrivateRoute component={CalendarPage} />} />
-          <Route path="/exercises" element={<PrivateRoute  component={Pathologies} />} />
+          <Route path="/pathologies" element={<PrivateRoute  component={Pathologies} />} />
+          <Route path="/exercises" element={<PrivateRoute  component={Exercises} />} />
         </Routes>
       </Router>
     </AuthProvider>

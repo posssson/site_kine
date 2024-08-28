@@ -5,6 +5,30 @@ const isAuthenticated = require('../middleware/auth');
 const Pathology = require('../models/Pathologie');
 const Patient = require('../models/Patient');
 const Appointment = require('../models/Appointment'); // Assurez-vous d'avoir un modèle Appointment
+const Exercise = require('../models/Exercise');
+
+
+// Route pour ajouter un exercice
+app.post('/exercises', isAuthenticated, async (req, res) => {
+  try {
+    const { name, description, pathologyIds } = req.body;
+    const exercise = new Exercise({ name, description, pathologies: pathologyIds });
+    await exercise.save();
+    res.status(201).json(exercise);
+  } catch (error) {
+    res.status(400).json({ error: 'Erreur lors de l\'ajout de l\'exercice' });
+  }
+});
+
+// Route pour obtenir les exercices
+app.get('/exercises', isAuthenticated, async (req, res) => {
+  try {
+    const exercises = await Exercise.find().populate('pathologies');
+    res.json(exercises);
+  } catch (error) {
+    res.status(500).json({ error: 'Erreur lors de la récupération des exercices' });
+  }
+});
 
 // Route pour récupérer les rendez-vous
 router.get('/appointments', isAuthenticated, async (req, res) => {
