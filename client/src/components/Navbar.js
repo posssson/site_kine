@@ -8,13 +8,12 @@ const Navbar = () => {
     <nav className="navbar">
       <h1>Mon Application</h1>
       <ul className="nav-links">
-        <li><Link to="/">Accueil</Link></li>
         <li><Link to="/dashboard">Dashboard</Link></li>
         <li><Link to="/calendar">Calendrier</Link></li>
         <li><Link to="/pathologies">Pathologies</Link></li>
         <li><Link to="/exercises">Exercices</Link></li>
-        <li><Link to="/login">Connexion</Link></li>
-        <li><Link to="/signup">Inscription</Link></li>
+        <li><Link to="/assign-exercises">Assigner exercices</Link></li>
+        
       </ul>
     </nav>
   );

@@ -1,6 +1,7 @@
 // client/src/components/Exercises.js
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import './Generalcss.css'; // Assurez-vous d'avoir un fichier CSS pour le style
 import './Exercises.css'; // Assurez-vous d'avoir un fichier CSS pour le style
 
 const Exercises = () => {

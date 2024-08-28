@@ -7,6 +7,33 @@ const Patient = require('../models/Patient');
 const Appointment = require('../models/Appointment'); // Assurez-vous d'avoir un modèle Appointment
 const Exercise = require('../models/Exercise');
 
+// Route pour attribuer des exercices à un rendez-vous
+router.post('/assign-exercises', isAuthenticated, async (req, res) => {
+  const { appointmentId, exercises } = req.body;
+
+  try {
+    // Vérifiez si le rendez-vous existe
+    const appointment = await Appointment.findById(appointmentId);
+    if (!appointment) {
+      return res.status(404).json({ error: 'Rendez-vous non trouvé' });
+    }
+
+    // Vérifiez si les exercices existent
+    const validExercises = await Exercise.find({ _id: { $in: exercises } });
+    if (validExercises.length !== exercises.length) {
+      return res.status(400).json({ error: 'Un ou plusieurs exercices sont invalides' });
+    }
+
+    // Attribuer les exercices au rendez-vous
+    appointment.exercises = exercises;
+    await appointment.save();
+
+    res.status(200).json({ message: 'Exercices attribués avec succès', appointment });
+  } catch (error) {
+    console.error('Erreur lors de l\'attribution des exercices:', error);
+    res.status(500).json({ error: 'Erreur interne du serveur' });
+  }
+});
 
 // Route pour ajouter un exercice
 router.post('/exercises', isAuthenticated, async (req, res) => {

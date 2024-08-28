@@ -9,6 +9,7 @@ import CalendarPage from './components/CalendarPage';
 import Pathologies from './components/Pathologies';
 import Exercices from './components/Exercices';
 import Navbar from './components/Navbar';
+import AssignExercises from './components/AssignExercises';
 import { AuthProvider, useAuth } from './context/AuthContext';
 import axios from 'axios';
 
@@ -28,6 +29,8 @@ const App = () => {
           <Route path="/calendar" element={<PrivateRoute component={CalendarPage} />} />
           <Route path="/pathologies" element={<PrivateRoute component={Pathologies} />} />
           <Route path="/exercises" element={<PrivateRoute component={Exercices} />} />
+          <Route path="/assign-exercises" element={<PrivateRoute component={AssignExercises} />} />
+          
         </Routes>
       </Router>
     </AuthProvider>
