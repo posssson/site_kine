@@ -1,6 +1,7 @@
 // client/src/components/SignupPage.js
 import React, { useState } from 'react';
 import axios from 'axios';
+import './Generalcss.css'; // Assurez-vous d'avoir un fichier CSS pour le style
 
 const SignupPage = () => {
   const [email, setEmail] = useState('');

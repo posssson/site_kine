@@ -4,6 +4,7 @@ import axios from 'axios';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import CalendarPage from './CalendarPage';
+import './Generalcss.css'; // Assurez-vous d'avoir un fichier CSS pour le style
 
 const Dashboard = () => {
   const [patients, setPatients] = useState([]);
@@ -47,7 +48,6 @@ const Dashboard = () => {
       return;
     }
     try {
-      // Ensure the pathology is an ObjectId
       const selectedPathology = pathologies.find(p => p._id === newPatient.pathology);
       if (!selectedPathology) {
         console.error('Pathologie sélectionnée invalide.');
@@ -56,7 +56,7 @@ const Dashboard = () => {
 
       const response = await axios.post('http://192.168.0.18:5000/api/patients', {
         name: newPatient.name,
-        pathology: selectedPathology._id // Use the ObjectId
+        pathology: selectedPathology._id
       });
 
       setPatients([...patients, response.data]);
@@ -66,14 +66,12 @@ const Dashboard = () => {
     }
   };
 
-
   return (
-    <div>
+    <div className="container">
       <h2>Gestion de Compte</h2>
-      <button onClick={handleLogout}>Se déconnecter</button>
+      <button className="add-button" onClick={handleLogout}>Se déconnecter</button>
       <nav>
         <ul>
-          {/* <li><Link to="/calendar">Calendrier des Patients</Link></li> */}
           <li><Link to="/pathologies">Ajouter Pathologie</Link></li>
           <li><Link to="/exercises">Exercices par Pathologie</Link></li>
           <li><Link to="/assign-exercises">Attribuer des Exercices</Link></li>
@@ -112,7 +110,7 @@ const Dashboard = () => {
             ))
           )}
         </select>
-        <button type="submit">Ajouter</button>
+        <button className="add-button" type="submit">Ajouter</button>
       </form>
       <CalendarPage patients={patients || []} />
     </div>

@@ -3,6 +3,7 @@ import React, { useEffect, useState } from 'react';
 import Calendar from 'react-calendar';
 import axios from 'axios';
 import 'react-calendar/dist/Calendar.css';
+import './Generalcss.css'; // Assurez-vous d'avoir un fichier CSS pour le style
 
 const CalendarWrapper = ({ onChange, value }) => {
   return <Calendar onChange={onChange} value={value} />;

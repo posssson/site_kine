@@ -1,6 +1,7 @@
 // client/src/components/HomePage.js
 import React from 'react';
 import { Link } from 'react-router-dom';
+import './Generalcss.css'; // Assurez-vous d'avoir un fichier CSS pour le style
 
 const HomePage = () => {
   return (

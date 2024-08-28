@@ -8,6 +8,7 @@ import Dashboard from './components/Dashboard';
 import CalendarPage from './components/CalendarPage';
 import Pathologies from './components/Pathologies';
 import Exercices from './components/Exercices';
+import Navbar from './components/Navbar';
 import { AuthProvider, useAuth } from './context/AuthContext';
 import axios from 'axios';
 
@@ -18,14 +19,15 @@ const App = () => {
   return (
     <AuthProvider>
       <Router>
+        <Navbar />
         <Routes>
           <Route path="/" element={<HomePage />} />
           <Route path="/login" element={<LoginPage />} />
           <Route path="/signup" element={<SignupPage />} />
           <Route path="/dashboard" element={<PrivateRoute component={Dashboard} />} />
           <Route path="/calendar" element={<PrivateRoute component={CalendarPage} />} />
-          <Route path="/pathologies" element={<PrivateRoute  component={Pathologies} />} />
-          <Route path="/exercises" element={<PrivateRoute  component={Exercices} />} />
+          <Route path="/pathologies" element={<PrivateRoute component={Pathologies} />} />
+          <Route path="/exercises" element={<PrivateRoute component={Exercices} />} />
         </Routes>
       </Router>
     </AuthProvider>

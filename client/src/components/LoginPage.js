@@ -3,6 +3,7 @@ import React, { useState } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
+import './Generalcss.css'; // Assurez-vous d'avoir un fichier CSS pour le style
 
 const LoginPage = () => {
   const [email, setEmail] = useState('');
