@@ -7,6 +7,7 @@ const Exercises = () => {
   const [exercises, setExercises] = useState([]);
   const [pathologies, setPathologies] = useState([]);
   const [newExercise, setNewExercise] = useState({ name: '', description: '', pathologyIds: [] });
+  const [editingExerciseId, setEditingExerciseId] = useState(null);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -24,14 +25,36 @@ const Exercises = () => {
     fetchData();
   }, []);
 
-  const handleAddExercise = async () => {
+  const handleAddOrUpdateExercise = async () => {
+    if (!newExercise.name) {
+      alert('Le nom de l\'exercice est obligatoire.');
+      return;
+    }
+
     try {
-      const response = await axios.post('http://192.168.0.18:5000/api/exercises', newExercise);
-      setExercises([...exercises, response.data]);
+      if (editingExerciseId) {
+        // Mise à jour de l'exercice existant
+        const response = await axios.put(`http://192.168.0.18:5000/api/exercises/${editingExerciseId}`, newExercise);
+        setExercises(exercises.map(ex => ex._id === editingExerciseId ? response.data : ex));
+        setEditingExerciseId(null);
+      } else {
+        // Ajout d'un nouvel exercice
+        const response = await axios.post('http://192.168.0.18:5000/api/exercises', newExercise);
+        setExercises([...exercises, response.data]);
+      }
       setNewExercise({ name: '', description: '', pathologyIds: [] });
     } catch (error) {
-      console.error('Erreur lors de l\'ajout de l\'exercice', error);
+      console.error('Erreur lors de l\'ajout ou de la mise à jour de l\'exercice', error);
     }
+  };
+
+  const handleEditExercise = (exercise) => {
+    setNewExercise({
+      name: exercise.name,
+      description: exercise.description,
+      pathologyIds: exercise.pathologies.map(p => p._id)
+    });
+    setEditingExerciseId(exercise._id);
   };
 
   const handlePathologyChange = (pathologyId) => {
@@ -45,7 +68,7 @@ const Exercises = () => {
 
   return (
     <div className="container">
-      <h2>Ajouter un Exercice</h2>
+      <h2>{editingExerciseId ? 'Modifier l\'Exercice' : 'Ajouter un Exercice'}</h2>
       <input
         type="text"
         value={newExercise.name}
@@ -71,7 +94,9 @@ const Exercises = () => {
           </div>
         ))}
       </div>
-      <button onClick={handleAddExercise}>Ajouter l'exercice</button>
+      <button onClick={handleAddOrUpdateExercise}>
+        {editingExerciseId ? 'Mettre à jour l\'exercice' : 'Ajouter l\'exercice'}
+      </button>
       <h3>Liste des Exercices</h3>
       <ul>
         {exercises.map((exercise) => (
@@ -82,6 +107,7 @@ const Exercises = () => {
                 <li key={pathology._id}>{pathology.name}</li>
               ))}
             </ul>
+            <button onClick={() => handleEditExercise(exercise)}>Modifier</button>
           </li>
         ))}
       </ul>
