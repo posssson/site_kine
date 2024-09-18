@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 
+const apiUrl = process.env.REACT_APP_API_URL;
+
 const AssignExercises = () => {
   const [appointments, setAppointments] = useState([]);
   const [exercisesByPathology, setExercisesByPathology] = useState({});
@@ -11,11 +13,14 @@ const AssignExercises = () => {
     const fetchData = async () => {
       try {
         // Fetch appointments with patient details
-        const appointmentsResponse = await axios.get('http://192.168.0.18:5000/api/appointments');
+        const appointmentsResponse = await axios.get(`${apiUrl}}/api/appointments`);
+        
+        // Check if appointments are populated correctly
+        console.log('Appointments:', appointmentsResponse.data);
         setAppointments(appointmentsResponse.data);
 
         // Fetch exercises and group them by pathology
-        const exercisesResponse = await axios.get('http://192.168.0.18:5000/api/exercises');
+        const exercisesResponse = await axios.get(`${apiUrl}}/api/exercises`);
         const exercises = exercisesResponse.data;
 
         const groupedExercises = exercises.reduce((acc, exercise) => {
@@ -43,7 +48,7 @@ const AssignExercises = () => {
     }
 
     try {
-      await axios.post('http://192.168.0.18:5000/api/assign-exercises', {
+      await axios.post(`${apiUrl}}/api/assign-exercises`, {
         appointmentId: selectedAppointment,
         exercises: selectedExercises,
       });
@@ -61,15 +66,15 @@ const AssignExercises = () => {
         <h3>Sélectionnez un Rendez-vous</h3>
         <ul>
           {appointments.map(appointment => (
-            <li key={appointment.id}>
+            <li key={appointment._id}>
               <label>
                 <input
                   type="radio"
                   name="appointment"
-                  value={appointment.id}
-                  onChange={() => setSelectedAppointment(appointment.id)}
+                  value={appointment._id}
+                  onChange={() => setSelectedAppointment(appointment._id)}
                 />
-                {new Date(appointment.date).toLocaleString()} - {appointment.patientId.name}
+                {new Date(appointment.date).toLocaleString()} - {appointment.patientId?.name || 'Nom non disponible'}
               </label>
             </li>
           ))}
@@ -83,11 +88,11 @@ const AssignExercises = () => {
             <h4>{pathology}</h4>
             <ul>
               {exercises.map(exercise => (
-                <li key={exercise.id}>
+                <li key={exercise._id}>
                   <label>
                     <input
                       type="checkbox"
-                      value={exercise.id}
+                      value={exercise._id}
                       onChange={(e) => {
                         const exerciseId = e.target.value;
                         setSelectedExercises(prev =>

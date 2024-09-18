@@ -3,6 +3,8 @@ import React, { useState } from 'react';
 import axios from 'axios';
 import './Generalcss.css'; // Assurez-vous d'avoir un fichier CSS pour le style
 
+const apiUrl = process.env.REACT_APP_API_URL;
+
 const SignupPage = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -10,7 +12,7 @@ const SignupPage = () => {
   const handleSignup = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.post('http://192.168.0.18:5000/signup', {
+      const response = await axios.post(`${apiUrl}}/signup`, {
         email,
         password,
       });

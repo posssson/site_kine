@@ -5,6 +5,8 @@ import axios from 'axios';
 import 'react-calendar/dist/Calendar.css';
 import './Generalcss.css'; // Assurez-vous d'avoir un fichier CSS pour le style
 
+const apiUrl = process.env.REACT_APP_API_URL;
+
 const CalendarWrapper = ({ onChange, value }) => {
   return <Calendar onChange={onChange} value={value} />;
 };
@@ -17,7 +19,7 @@ const CalendarPage = ({ patients }) => {
   useEffect(() => {
     const fetchAppointments = async () => {
       try {
-        const response = await axios.get('http://192.168.0.18:5000/api/appointments');
+        const response = await axios.get(`${apiUrl}}/api/appointments`);
         console.log('Rendez-vous reçus:', response.data); // Vérifiez les données ici
         setAppointments(response.data);
       } catch (error) {
@@ -39,7 +41,7 @@ const CalendarPage = ({ patients }) => {
   const handleAddAppointment = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.post('http://192.168.0.18:5000/api/appointments', {
+      const response = await axios.post(`${apiUrl}}/api/appointments`, {
         ...newAppointment,
         date: date.toISOString().split('T')[0], // Format de la date
       });

@@ -1,0 +1,24 @@
+
+> client@1.0.0 start
+> PORT=4500 react-scripts start
+
+(node:63977) [DEP_WEBPACK_DEV_SERVER_ON_AFTER_SETUP_MIDDLEWARE] DeprecationWarning: 'onAfterSetupMiddleware' option is deprecated. Please use the 'setupMiddlewares' option.
+(Use `node --trace-deprecation ...` to show where the warning was created)
+(node:63977) [DEP_WEBPACK_DEV_SERVER_ON_BEFORE_SETUP_MIDDLEWARE] DeprecationWarning: 'onBeforeSetupMiddleware' option is deprecated. Please use the 'setupMiddlewares' option.
+Starting the development server...
+
+Compiled successfully!
+
+You can now view client in the browser.
+
+  Local:            http://localhost:4500
+  On Your Network:  http://192.168.0.18:4500
+
+Note that the development build is not optimized.
+To create a production build, use npm run build.
+
+asset static/js/bundle.js 2.41 MiB [emitted] (name: main) 1 related asset
+asset index.html 270 bytes [emitted]
+asset asset-manifest.json 190 bytes [emitted]
+cached modules 2.13 MiB (javascript) 29.6 KiB (runtime) [cached] 225 modules
+webpack 5.94.0 compiled successfully in 1659 ms

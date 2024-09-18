@@ -1,13 +1,14 @@
 // client/src/index.js
 import React from 'react';
-import ReactDOM from 'react-dom';
-// import './index.css'; // Assurez-vous que ce fichier existe ou modifiez le chemin
+import ReactDOM from 'react-dom/client';
 import App from './App';
 import { AuthProvider } from './context/AuthContext';
 
-ReactDOM.render(
+const root = ReactDOM.createRoot(document.getElementById('root'));
+root.render(
   <React.StrictMode>
-    <App />
-  </React.StrictMode>,
-  document.getElementById('root')
+    <AuthProvider>
+      <App />
+    </AuthProvider>
+  </React.StrictMode>
 );

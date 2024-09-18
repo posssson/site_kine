@@ -14,8 +14,9 @@ const app = express();
 app.use(express.json());
 
 // Configuration CORS
+// origin: 'http://192.168.0.18:4500', // Remplacez par l'origine de votre client
 const corsOptions = {
-  origin: 'http://192.168.0.18:4500', // Remplacez par l'origine de votre client
+  origin: ['https://testkine.duckdns.org', 'http://localhost:4500'],
   credentials: true, // Autoriser les cookies et les en-têtes d'autorisation
 };
 app.use(cors(corsOptions));

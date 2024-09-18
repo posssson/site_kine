@@ -1,10 +1,10 @@
 // client/src/components/Dashboard.js
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useCallback } from 'react';
 import axios from 'axios';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import CalendarPage from './CalendarPage';
-import './Generalcss.css'; // Assurez-vous d'avoir un fichier CSS pour le style
+import './Generalcss.css';
 
 const Dashboard = () => {
   const [patients, setPatients] = useState([]);
@@ -13,28 +13,29 @@ const Dashboard = () => {
   const { logout } = useAuth();
   const navigate = useNavigate();
 
+  // Utilisation de useCallback pour mémoriser ces fonctions
+  const fetchPatients = useCallback(async () => {
+    try {
+      const response = await axios.get(`${process.env.REACT_APP_API_URL}/api/patients`);
+      setPatients(response.data);
+    } catch (error) {
+      console.error('Erreur lors de la récupération des patients', error);
+    }
+  }, []);
+
+  const fetchPathologies = useCallback(async () => {
+    try {
+      const response = await axios.get(`${process.env.REACT_APP_API_URL}/api/pathologies`);
+      setPathologies(response.data);
+    } catch (error) {
+      console.error('Erreur lors de la récupération des pathologies', error);
+    }
+  }, []);
+
   useEffect(() => {
-    const fetchPatients = async () => {
-      try {
-        const response = await axios.get('http://192.168.0.18:5000/api/patients');
-        setPatients(response.data);
-      } catch (error) {
-        console.error('Erreur lors de la récupération des patients', error);
-      }
-    };
-
-    const fetchPathologies = async () => {
-      try {
-        const response = await axios.get('http://192.168.0.18:5000/api/pathologies');
-        setPathologies(response.data);
-      } catch (error) {
-        console.error('Erreur lors de la récupération des pathologies', error);
-      }
-    };
-
     fetchPatients();
     fetchPathologies();
-  }, []);
+  }, [fetchPatients, fetchPathologies]);
 
   const handleLogout = () => {
     logout();
@@ -54,12 +55,12 @@ const Dashboard = () => {
         return;
       }
 
-      const response = await axios.post('http://192.168.0.18:5000/api/patients', {
+      const response = await axios.post(`${process.env.REACT_APP_API_URL}/api/patients`, {
         name: newPatient.name,
         pathology: selectedPathology._id
       });
 
-      setPatients([...patients, response.data]);
+      setPatients(prevPatients => [...prevPatients, response.data]);
       setNewPatient({ name: '', pathology: '' });
     } catch (error) {
       console.error('Erreur lors de l\'ajout du patient', error);
@@ -95,24 +96,20 @@ const Dashboard = () => {
           type="text"
           placeholder="Nom"
           value={newPatient.name}
-          onChange={(e) => setNewPatient({ ...newPatient, name: e.target.value })}
+          onChange={(e) => setNewPatient(prev => ({ ...prev, name: e.target.value }))}
         />
         <select
           value={newPatient.pathology}
-          onChange={(e) => setNewPatient({ ...newPatient, pathology: e.target.value })}
+          onChange={(e) => setNewPatient(prev => ({ ...prev, pathology: e.target.value }))}
         >
           <option value="">Sélectionner une pathologie</option>
-          {pathologies.length === 0 ? (
-            <option disabled>Aucune pathologie disponible</option>
-          ) : (
-            pathologies.map(pathology => (
-              <option key={pathology._id} value={pathology._id}>{pathology.name}</option>
-            ))
-          )}
+          {pathologies.map(pathology => (
+            <option key={pathology._id} value={pathology._id}>{pathology.name}</option>
+          ))}
         </select>
         <button className="add-button" type="submit">Ajouter</button>
       </form>
-      <CalendarPage patients={patients || []} />
+      <CalendarPage patients={patients} />
     </div>
   );
 };

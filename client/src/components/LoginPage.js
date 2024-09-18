@@ -5,6 +5,8 @@ import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import './Generalcss.css'; // Assurez-vous d'avoir un fichier CSS pour le style
 
+const apiUrl = process.env.REACT_APP_API_URL;
+
 const LoginPage = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -14,9 +16,11 @@ const LoginPage = () => {
   const handleLogin = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.post('http://192.168.0.18:5000/login', {
+      const response = await axios.post(`${process.env.REACT_APP_API_URL}/login`, {
         email,
         password,
+      }, {
+        withCredentials: true
       });
 
       if (response.status === 200) {

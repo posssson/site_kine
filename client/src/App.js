@@ -13,13 +13,14 @@ import AssignExercises from './components/AssignExercises';
 import { AuthProvider, useAuth } from './context/AuthContext';
 import axios from 'axios';
 
-// Configure Axios pour inclure les cookies dans chaque requête
+// Configuration de l'URL de base pour Axios
+axios.defaults.baseURL = 'https://testkine.duckdns.org';
 axios.defaults.withCredentials = true;
 
 const App = () => {
   return (
-    <AuthProvider>
-      <Router>
+    <Router>
+      <AuthProvider>
         <Navbar />
         <Routes>
           <Route path="/" element={<HomePage />} />
@@ -30,10 +31,9 @@ const App = () => {
           <Route path="/pathologies" element={<PrivateRoute component={Pathologies} />} />
           <Route path="/exercises" element={<PrivateRoute component={Exercices} />} />
           <Route path="/assign-exercises" element={<PrivateRoute component={AssignExercises} />} />
-          
         </Routes>
-      </Router>
-    </AuthProvider>
+      </AuthProvider>
+    </Router>
   );
 };
 
