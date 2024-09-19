@@ -17,7 +17,7 @@ function isAuthenticated(req, res, next) {
     } else {
       // Sinon, rediriger vers la page de connexion
       console.log('Redirecting to /login');
-      res.redirect('/login');
+      res.redirect('/auth/login');
     }
   }
 }

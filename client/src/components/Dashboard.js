@@ -39,7 +39,7 @@ const Dashboard = () => {
 
   const handleLogout = () => {
     logout();
-    navigate('/login');
+    navigate('/auth/login');
   };
 
   const handleAddPatient = async (e) => {
